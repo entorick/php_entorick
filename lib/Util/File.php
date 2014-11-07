@@ -7,7 +7,6 @@
 class Util_File{
     /**
      * 递归遍历全部文件夹
-     * copy and modify from internet
      *
      * @params string $path         要遍历的根路径
      * @params string $handleMethod 找到文件时的处理函数，默认false，表示就输出一下文件名
