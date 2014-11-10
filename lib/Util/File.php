@@ -62,10 +62,11 @@ class Util_File{
      * entorick11@qq.com
      *
      * @param string $path // 文件路径
+     * @param bool   $tab  // 每行是否按tab分割
      *
      * @return array // 文件行
      */
-    public static function getFileLineArr($path){
+    public static function getFileLineArr($path, $tab = false){
         if (!file_exists($path)){
             return array();
         }
@@ -73,6 +74,9 @@ class Util_File{
         $result = array();
         while(!feof($fileHandle)){
             $line = trim(fgets($fileHandle));
+            if ($tab){
+                $line = explode("\t", $line);
+            }
             $result[] = $line;
         }
         return $result;
