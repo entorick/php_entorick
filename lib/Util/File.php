@@ -5,8 +5,11 @@
  */
 
 class Util_File{
+
     /**
      * 递归遍历全部文件夹
+     * 默认遍历当前文件夹
+     * 第二参数是处理文件的方法，第三参数是这个方法属于的类
      *
      * @params string $path         要遍历的根路径
      * @params string $handleMethod 找到文件时的处理函数，默认false，表示就输出一下文件名
@@ -52,6 +55,27 @@ class Util_File{
                 }
             }
         }
+    }
+
+    /**
+     * 获取一个文件的全部行，以array返回
+     * entorick11@qq.com
+     *
+     * @param string $path // 文件路径
+     *
+     * @return array // 文件行
+     */
+    public static function getFileLineArr($path){
+        if (!file_exists($path)){
+            return array();
+        }
+        $fileHandle = fopen($path, "r");
+        $result = array();
+        while(!feof($fileHandle)){
+            $line = trim(fgets($fileHandle));
+            $result[] = $line;
+        }
+        return $result;
     }
 
 }
