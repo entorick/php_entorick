@@ -79,10 +79,14 @@ class Info_Conf{
      * 
      * @return mixed
      */
-    public static function get($key, $filename)
+    public static function get($key, $filename, $filePath = false)
     {
         if (self::$instance == null){
-            self::$instance = new Conf();
+            if ($filePath === false){
+                self::$instance = new self();
+            } else {
+                self::$instance = new self($filePath);
+            }
         }
         if (!isset(self::$cache[$filename])) {
             $objConf = self::$instance->processConfFile(self::$instance->basePath . $filename);
