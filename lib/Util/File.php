@@ -74,8 +74,8 @@ class Util_File{
         $result = array();
         while(!feof($fileHandle)){
             $line = trim(fgets($fileHandle));
-            if ($tab){
-                $line = explode("\t", $line);
+            if ($tab !== false){
+                $line = explode($tab, $line);
             }
             $result[] = $line;
         }
