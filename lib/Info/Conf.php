@@ -5,7 +5,6 @@
  * @author entorick11@qq.com
  */
 class Info_Conf{
-    private $basePath = '';// 根目录
     private static $instance = null;
     private static $cache;
 
@@ -13,12 +12,7 @@ class Info_Conf{
     /**
      * 构造方法，初始化配置文件所在的根目录
      */
-    private function __construct($basePath = false){
-        if ($basePath === false || !is_dir($basePath)){
-            $this->basePath = dirname(__FILE__) . '/../conf/';
-        } else {
-            $this->basePath = $basePath;
-        }
+    private function __construct(){
     }
 
 
@@ -79,17 +73,13 @@ class Info_Conf{
      * 
      * @return mixed
      */
-    public static function get($key, $filename, $filePath = false)
+    public static function get($key, $filename)
     {
         if (self::$instance == null){
-            if ($filePath === false){
-                self::$instance = new self();
-            } else {
-                self::$instance = new self($filePath);
-            }
+            self::$instance = new self();
         }
         if (!isset(self::$cache[$filename])) {
-            $objConf = self::$instance->processConfFile(self::$instance->basePath . $filename);
+            $objConf = self::$instance->processConfFile($filename);
             self::$cache[$filename] = $objConf;
         }
         
