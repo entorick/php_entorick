@@ -42,7 +42,7 @@ class Info_Conf{
             $val = explode("=", $val);
             $keyline = $val[0];
             $value = $val[1];
-            $value = str_replace(array("\"", "\'"), "", $value);
+            $value = str_replace(array("\"", "'"), "", $value);
             $keyline = explode(".", $keyline);
             $this->recursive($keyline, $result, $value);
         }
@@ -91,6 +91,43 @@ class Info_Conf{
         }
         
         return $confVal;
+    }
+
+    /**
+     * 根据数组编写配置
+     * @param string $key
+     * @param array $confArr
+     * @param string $filename
+     *
+     * @return bool true|false
+     */
+    public static function write($key, $confArr, $filename){
+        if (!is_array($confArr) || !file_exists($filename)){
+            return false;
+        }
+        $str = self::buildConfString($confArr, $key . ".");
+        echo $str;
+        return true;
+    }
+
+    /**
+     * 递归根据传入的数组建立配置字符串
+     * @param array  $confArr
+     * @param string $preString
+     * @return string
+     */
+    private static function buildConfString($confArr, $preString = ''){
+        $retStr = '';
+        foreach ($confArr as $k => $v){
+            if (is_array($v)){
+                $tmpStr = $preString . $k . ".";
+                $tmpStr = self::buildConfString($v, $tmpStr);
+            } else {
+                $tmpStr = $preString . $k . "=" . "\"" . $v . "\"\n";
+            }
+            $retStr .= $tmpStr;
+        }
+        return $retStr;
     }
 
 }
