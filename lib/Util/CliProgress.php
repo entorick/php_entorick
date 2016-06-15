@@ -14,8 +14,12 @@ class Util_CliProgress{
     }
 
     public function show($cur){
-        if (($cur % $this->_gap) == 0 || $cur == $this->_total){
+        if (($cur % $this->_gap) == 0){
             printf("progress: [%-100s] %s%%\r", str_repeat('=', intval($cur / $this->_total * 100)) . ">", round($cur / $this->_total * 100, 2));
+        }
+        if ($cur == $this->_total){
+            // 到最后的时候是换行
+            printf("progress: [%-100s] %s%%\n", str_repeat('=', intval($cur / $this->_total * 100)) . ">", round($cur / $this->_total * 100, 2));
         }
     }
 
