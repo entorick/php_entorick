@@ -5,21 +5,43 @@
 class Util_CliProgress{
     private $_total = 0;
     private $_gap = 0;
+    private $_timeGapBegin = 0;
+    private $_remain = '';
+    private $_gapTimes = 0;
 
     public function __construct($total){
         if (is_numeric($total)){
             $this->_total = $total;
             $this->_gap = $total / 10000;
+            $this->_timeGapBegin = microtime(true);
         }
     }
 
     public function show($cur){
-        if (($cur % $this->_gap) == 0){
-            printf("progress: [%-100s] %s%%\r", str_repeat('=', intval($cur / $this->_total * 100)) . ">", round($cur / $this->_total * 100, 2));
-        }
-        if ($cur == $this->_total){
-            // 到最后的时候是换行
-            printf("progress: [%-100s] %s%%\n", str_repeat('=', intval($cur / $this->_total * 100)) . ">", round($cur / $this->_total * 100, 2));
+        if (($cur % $this->_gap) == 0 || $cur == $this->_total){
+
+            $this->_gapTimes++;
+            $timeCost = microtime(true) - $this->_timeGapBegin;
+            if ($timeCost > 1){
+                $this->_timeGapBegin = microtime(true);
+                $perSecond = $this->_gap * $this->_gapTimes / $timeCost;
+                $this->_perSecond = $perSecond;
+                $left = $this->_total - $cur;
+                $second = intval($left / $perSecond);
+                $min = floor($second / 60);
+                $hour = floor($min / 60);
+                $second = $second % 60;
+                $min = $min % 60;
+                $this->_remain = $hour . "h " . $min . "m " . $second . "s";
+                $this->_gapTimes = 0;
+            }
+
+
+            if ($cur >= $this->_total){
+                printf("progress: [%-100s] %-5s%%,remain:%-15s\n", str_repeat('=', intval($cur / $this->_total * 100)) . ">", round($cur / $this->_total * 100, 2), $this->_remain);
+            } else {
+                printf("progress: [%-100s] %-5s%%,remain:%-15s\r", str_repeat('=', intval($cur / $this->_total * 100)) . ">", round($cur / $this->_total * 100, 2), $this->_remain);
+            }
         }
     }
 
