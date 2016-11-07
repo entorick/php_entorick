@@ -19,6 +19,20 @@ class Db_Config{
      *   'port' => '',
      * )
      */
+    public static function getByStr($string){
+        return self::decodeMysqlString($string);
+    }
+
+    /*
+     * decode string like mysql -h127.0.0.1 -P3306 -uadmin -padmin
+     * @return array(
+     *   'dbkey' => '',
+     *   'host' => '',
+     *   'user' => '',
+     *   'pass' => '',
+     *   'port' => '',
+     * )
+     */
     public static function decodeMysqlString($string){
         $retArr = array(
             'dbkey' => '',
