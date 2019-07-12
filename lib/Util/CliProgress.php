@@ -8,6 +8,7 @@ class Util_CliProgress{
     private $_timeGapBegin = 0;
     private $_remain = '';
     private $_gapTimes = 0;
+    private $_perSecond = 0;
 
     public function __construct($total){
         if (is_numeric($total)){
