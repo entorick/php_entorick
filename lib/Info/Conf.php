@@ -18,6 +18,11 @@ class Info_Conf{
 
     /**
      * 处理配置文件
+     *
+     * @param string $filename // file path
+     *
+     * @return array
+     *
      */
     private function processConfFile($filename){
         if (!file_exists($filename)){

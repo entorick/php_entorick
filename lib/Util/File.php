@@ -82,4 +82,21 @@ class Util_File{
         return $result;
     }
 
+    public static function getFileLineYield($path, $explode = "\t"){
+        if (!file_exists($path)){
+            return array();
+        }
+        $fileHandle = fopen($path, "r");
+        try{
+            while($line = trim(fgets($fileHandle))){
+                if ($explode !== false){
+                    $line = explode($explode, $line);
+                }
+                yield $line;
+            }
+        } finally{
+            fclose($fileHandle);
+        }
+    }
+
 }
