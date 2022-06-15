@@ -9,6 +9,7 @@ class Util_CliProgress{
     private $_remain = '';
     private $_gapTimes = 0;
     private $_perSecond = 0;
+    private $_cur = 0;
 
     public function __construct($total){
         if (is_numeric($total)){
@@ -18,7 +19,11 @@ class Util_CliProgress{
         }
     }
 
-    public function show($cur){
+    public function show($cur = null){
+        if ($cur === null){
+            $this->_cur++;
+            $cur = $this->_cur;
+        }
         if (($cur % $this->_gap) == 0 || $cur == $this->_total){
 
             $this->_gapTimes++;
